@@ -202,9 +202,13 @@
 
     @supports (animation-timeline: scroll()) {
         @media (prefers-reduced-motion: no-preference) {
+            /* Longhands on purpose: with the `animation` shorthand, the production
+               minifier folds animation-timeline into it, which browsers reject */
             .scroll-progress {
                 transform-origin: left;
-                animation: scroll-progress linear both;
+                animation-name: scroll-progress;
+                animation-timing-function: linear;
+                animation-fill-mode: both;
                 animation-timeline: scroll(root);
             }
         }

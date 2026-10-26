@@ -1,6 +1,8 @@
 ---
 import "../styles/global.css";
 
+import Analytics from "@vercel/analytics/astro";
+
 import Header from "../components/layout/Header.astro";
 import Footer from "../components/layout/Footer.astro";
 import Seo from "../components/layout/Seo.astro";
@@ -21,6 +23,8 @@ const { title = site.title, description = site.description, noindex = false } = 
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <Seo title={title} description={description} noindex={noindex} />
+        <!-- Vercel Web Analytics: page views; only reports on the Vercel deployment -->
+        <Analytics />
         <meta name="theme-color" content="#fafaf9" media="(prefers-color-scheme: light)" />
         <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
