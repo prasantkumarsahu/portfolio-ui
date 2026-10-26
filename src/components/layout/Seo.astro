@@ -1,4 +1,6 @@
 ---
+import { getImage } from "astro:assets";
+import profile from "../../assets/profile.jpg";
 import { contactChannels, site } from "../../data/site";
 import { roles } from "../../data/experience";
 import { skillCategories } from "../../data/skills";
@@ -18,6 +20,9 @@ const { title, description, image = "/og.png", noindex = false } = Astro.props;
 const base = Astro.site;
 const canonical = base && new URL(Astro.url.pathname, base).href;
 const imageUrl = base && new URL(image, base).href;
+// The person's own photo for structured data (the og image is the generic preview card)
+const photo = await getImage({ src: profile, width: 460, format: "jpg" });
+const photoUrl = base && new URL(photo.src, base).href;
 
 // Only link profiles that are filled in, not the placeholders
 const sameAs = [
@@ -35,7 +40,13 @@ const person = {
     name: site.name,
     jobTitle: site.role,
     description: site.description,
-    ...(base && { url: new URL("/", base).href, image: imageUrl }),
+    ...(base && { url: new URL("/", base).href, image: photoUrl }),
+    address: {
+        "@type": "PostalAddress",
+        addressLocality: site.location.city,
+        addressCountry: site.location.countryCode,
+    },
+    homeLocation: { "@type": "Place", name: `${site.location.city}, ${site.location.country}` },
     ...(currentRole && { worksFor: { "@type": "Organization", name: currentRole.company } }),
     knowsAbout: skillCategories.flatMap((category) => category.skills),
     sameAs,

@@ -9,14 +9,14 @@ const { class: className = "" } = Astro.props;
 ---
 
 <nav aria-label="Sections" class={className}>
-    <ul class="flex justify-between gap-8 text-sm text-muted lg:justify-start">
+    <ul class="flex justify-between gap-3 text-sm text-muted sm:gap-8 md:justify-start md:gap-6 lg:gap-8">
         {
             navSections.map((section) => (
                 <li>
                     <a
                         href={`/#${section.id}`}
                         data-nav-link
-                        class="relative transition-colors duration-300 after:absolute after:inset-x-0 after:-bottom-1.5 after:h-px after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-300 after:ease-out hover:text-ink hover:after:scale-x-100 aria-current:text-ink aria-current:after:scale-x-100"
+                        class="relative inline-block py-1 transition-colors duration-300 after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-300 after:ease-out hover:text-ink hover:after:scale-x-100 aria-current:text-ink aria-current:after:scale-x-100"
                     >
                         {section.name}
                     </a>

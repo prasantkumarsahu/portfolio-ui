@@ -1,6 +1,8 @@
 ---
-import { ArrowDown, Download } from "@lucide/astro";
+import { ArrowDown, Download, MapPin } from "@lucide/astro";
+import { Image } from "astro:assets";
 import dotRow from "../../assets/dot-row.svg";
+import profile from "../../assets/profile.jpg";
 import { availability, site } from "../../data/site";
 import Button from "../ui/Button.astro";
 import Container from "../ui/Container.astro";
@@ -32,70 +34,102 @@ import Container from "../ui/Container.astro";
         </div>
 
         <div
-            class="relative flex flex-wrap items-center gap-x-5 gap-y-3 motion-safe:animate-fade-up"
+            class="relative grid gap-10 md:grid-cols-[minmax(0,1fr)_auto] md:items-center md:gap-10 lg:gap-16"
         >
-            <p
-                class="flex items-center gap-2 text-[11px] font-medium uppercase text-muted"
-            >
-                <span class="relative flex size-1.5 shrink-0">
-                    <span
-                        class="absolute inset-0 rounded-full bg-ink opacity-40 motion-safe:animate-ping"
-                    ></span>
-                    <span class="relative size-1.5 rounded-full bg-ink"></span>
-                </span>
-                {site.eyebrow}
-            </p>
-            <a
-                href="/#contact"
-                class="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-3 py-1.5 text-xs text-ink transition-colors duration-300 hover:border-emerald-500/50"
-            >
-                <span
-                    class="relative flex size-1.5 shrink-0"
-                    aria-hidden="true"
+            <div class="flex flex-col gap-10">
+                <div
+                    class="relative flex flex-wrap items-center gap-x-5 gap-y-3 motion-safe:animate-fade-up"
                 >
-                    <span
-                        class="absolute inset-0 rounded-full bg-emerald-500 opacity-60 motion-safe:animate-ping"
-                    ></span>
-                    <span class="relative size-1.5 rounded-full bg-emerald-500"
-                    ></span>
-                </span>
-                {availability.badge}
-            </a>
-        </div>
+                    <p
+                        class="flex items-center gap-2 text-[11px] font-medium uppercase text-muted"
+                    >
+                        <span class="relative flex size-1.5 shrink-0">
+                            <span
+                                class="absolute inset-0 rounded-full bg-ink opacity-40 motion-safe:animate-ping"
+                            ></span>
+                            <span class="relative size-1.5 rounded-full bg-ink"></span>
+                        </span>
+                        {site.eyebrow}
+                    </p>
+                    <a
+                        href="/#contact"
+                        class="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-3 py-1.5 text-xs text-ink transition-colors duration-300 hover:border-emerald-500/50"
+                    >
+                        <span
+                            class="relative flex size-1.5 shrink-0"
+                            aria-hidden="true"
+                        >
+                            <span
+                                class="absolute inset-0 rounded-full bg-emerald-500 opacity-60 motion-safe:animate-ping"
+                            ></span>
+                            <span class="relative size-1.5 rounded-full bg-emerald-500"
+                            ></span>
+                        </span>
+                        {availability.badge}
+                    </a>
+                </div>
 
-        <div class="relative flex max-w-210 flex-col gap-6">
-            <h1
-                id="hero-title"
-                class="text-[40px] font-medium leading-[1.08] text-ink motion-safe:animate-fade-up sm:text-5xl lg:text-[64px]"
-                style="animation-delay: 80ms"
-            >
-                <span class="sr-only">{site.name}, </span>{site.role}
-            </h1>
-            <p
-                class="max-w-162.5 text-[17px] leading-[1.65] text-muted motion-safe:animate-fade-up"
-                style="animation-delay: 180ms"
-            >
-                {site.tagline}
-            </p>
-            <div
-                class="flex flex-wrap gap-3 pt-2 motion-safe:animate-fade-up"
-                style="animation-delay: 280ms"
-            >
-                <Button href="#projects" variant="primary" size="lg">
-                    View projects
-                    <ArrowDown
-                        size={16}
-                        class="transition-transform duration-300 group-hover/btn:translate-y-0.5"
-                    />
-                </Button>
-                <Button href={site.resumeUrl} size="lg" download>
-                    Download resume
-                    <Download
-                        size={16}
-                        class="hidden transition-transform duration-300 group-hover/btn:translate-y-0.5 sm:block"
-                    />
-                </Button>
+                <div class="relative flex max-w-210 flex-col gap-6">
+                    <h1
+                        id="hero-title"
+                        class="text-4xl font-medium leading-[1.08] text-ink motion-safe:animate-fade-up min-[360px]:text-[40px] sm:text-5xl lg:text-[64px]"
+                        style="animation-delay: 80ms"
+                    >
+                        <span class="sr-only">{site.name}, </span>{site.role}
+                    </h1>
+                    <p
+                        class="max-w-162.5 text-[17px] leading-[1.65] text-muted motion-safe:animate-fade-up"
+                        style="animation-delay: 180ms"
+                    >
+                        {site.tagline}
+                    </p>
+                    <div
+                        class="flex flex-wrap gap-3 pt-2 motion-safe:animate-fade-up"
+                        style="animation-delay: 280ms"
+                    >
+                        <Button href="#projects" variant="primary" size="lg">
+                            View projects
+                            <ArrowDown
+                                size={16}
+                                class="transition-transform duration-300 group-hover/btn:translate-y-0.5"
+                            />
+                        </Button>
+                        <Button href={site.resumeUrl} size="lg" download>
+                            Download resume
+                            <Download
+                                size={16}
+                                class="hidden transition-transform duration-300 group-hover/btn:translate-y-0.5 sm:block"
+                            />
+                        </Button>
+                    </div>
+                </div>
             </div>
+
+            <!-- Portrait with location; first on phones, right column on desktop -->
+            <figure
+                class="relative order-first justify-self-start motion-safe:animate-fade-up md:order-0 md:justify-self-end"
+                style="animation-delay: 200ms"
+            >
+                <div
+                    class="group relative size-28 overflow-hidden rounded-2xl border border-line bg-subtle shadow-[0_24px_60px_-30px_rgb(0_0_0/0.45)] sm:size-40 md:size-48 lg:size-72 lg:rounded-3xl"
+                >
+                    <Image
+                        src={profile}
+                        alt={`Portrait of ${site.name}`}
+                        widths={[160, 320, 460]}
+                        sizes="(min-width: 1024px) 288px, (min-width: 768px) 192px, (min-width: 640px) 160px, 112px"
+                        loading="eager"
+                        fetchpriority="high"
+                        class="size-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    />
+                </div>
+                <figcaption
+                    class="absolute -bottom-3 left-1/2 inline-flex -translate-x-1/2 items-center gap-1.5 rounded-full border border-line bg-surface px-3 py-1.5 text-xs whitespace-nowrap text-ink shadow-sm"
+                >
+                    <MapPin size={12} class="text-accent-ink" aria-hidden="true" />
+                    {site.location.city}, {site.location.country}
+                </figcaption>
+            </figure>
         </div>
 
         <div

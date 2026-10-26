@@ -7,6 +7,7 @@ export const site = {
     githubUsername: "prasantkumarsahu",
     githubUrl: "https://github.com/prasantkumarsahu",
     role: "Full Stack Java Developer",
+    location: { city: "Bangalore", country: "India", countryCode: "IN" },
     eyebrow: "Engineering with intent",
     tagline:
         "Building enterprise and AI-powered systems with Java, Spring Boot, React and Next.js",
