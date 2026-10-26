@@ -111,6 +111,9 @@
 
     body {
         @apply bg-canvas text-ink font-sans antialiased;
+        /* Safety net against sideways page scroll on phones; clip (unlike hidden)
+           doesn't create a scroll container, so the sticky header keeps working */
+        overflow-x: clip;
     }
 
     section[id] {
