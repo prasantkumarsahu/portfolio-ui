@@ -1,0 +1,41 @@
+---
+import { Sparkles } from "@lucide/astro";
+import { site } from "../../data/site";
+import Container from "../ui/Container.astro";
+import Button from "../ui/Button.astro";
+import Nav from "./Nav.astro";
+import ThemeToggle from "./ThemeToggle.astro";
+
+const year = new Date().getFullYear();
+---
+
+<header
+    class="z-40 bg-canvas/85 backdrop-blur-md lg:sticky lg:top-0 lg:border-b lg:border-transparent"
+>
+    <Container
+        class="grid grid-cols-[1fr_auto] items-center gap-x-4 gap-y-6 py-6 lg:flex lg:justify-between"
+    >
+        <a href="/" class="flex items-baseline gap-3">
+            <span class="font-semibold text-ink">{site.name}</span>
+            <span class="hidden text-[11px] text-muted lg:inline">/ Portfolio</span>
+        </a>
+
+        <Nav class="col-span-2 row-start-2 lg:order-0" />
+
+        <p class="row-start-3 text-xs uppercase text-muted lg:hidden">
+            Portfolio / {year}
+        </p>
+
+        <div class="contents lg:flex lg:items-center lg:gap-3">
+            <div class="col-start-2 row-start-1 justify-self-end">
+                <ThemeToggle />
+            </div>
+            <Button
+                href="/#contact"
+                class="col-start-2 row-start-3 justify-self-end"
+            >
+                Ask about me <Sparkles size={16} />
+            </Button>
+        </div>
+    </Container>
+</header>

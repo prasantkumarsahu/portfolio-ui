@@ -1,0 +1,55 @@
+---
+import { ArrowRight, Cpu, Database, Plug, Workflow } from "@lucide/astro";
+import { aiExplorations } from "../../data/ai";
+import Container from "../ui/Container.astro";
+import SectionHeader from "../ui/SectionHeader.astro";
+
+const icons = { workflow: Workflow, cpu: Cpu, database: Database, plug: Plug };
+---
+
+<section id="ai" aria-labelledby="ai-title" class="border-t border-line">
+    <Container class="flex flex-col gap-10 py-16 lg:py-22">
+        <SectionHeader
+            index="04"
+            eyebrow="Beyond the application"
+            title="AI and intelligent systems"
+            description="Generative AI I build into enterprise document workflows at IBM."
+            headingId="ai-title"
+        />
+
+        <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+            {
+                aiExplorations.map((item) => {
+                    const Icon = icons[item.icon];
+                    return (
+                        <article class="flex flex-col gap-6 rounded-xl border border-line bg-surface p-6">
+                            <div class="flex items-center justify-between">
+                                <span class="flex size-10 items-center justify-center rounded-lg bg-subtle text-ink">
+                                    <Icon size={20} stroke-width={1.75} />
+                                </span>
+                                <span class="text-[10px] uppercase text-muted">In production</span>
+                            </div>
+
+                            <div class="flex flex-col gap-3">
+                                <p class="text-[10px] font-medium uppercase text-muted">{item.label}</p>
+                                <h3 class="text-[22px] font-medium text-ink">{item.title}</h3>
+                                <p class="text-base leading-[1.65] text-muted lg:text-[17px]">
+                                    {item.description}
+                                </p>
+                            </div>
+
+                            <ol class="mt-auto flex items-center justify-between border-t border-line pt-4 text-[11px] text-muted" aria-label="Concept flow">
+                                {item.flow.map((stage, i) => (
+                                    <li class="flex items-center gap-2">
+                                        {stage}
+                                        {i < item.flow.length - 1 && <ArrowRight size={12} aria-hidden="true" />}
+                                    </li>
+                                ))}
+                            </ol>
+                        </article>
+                    );
+                })
+            }
+        </div>
+    </Container>
+</section>

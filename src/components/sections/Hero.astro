@@ -1,0 +1,68 @@
+---
+import { ArrowDown, Download } from "@lucide/astro";
+import dotRow from "../../assets/dot-row.svg";
+import { site } from "../../data/site";
+import Button from "../ui/Button.astro";
+import Container from "../ui/Container.astro";
+---
+
+<section aria-labelledby="hero-title" class="relative overflow-hidden">
+    <Container class="relative flex flex-col gap-10 pt-12 pb-14 lg:pt-22">
+        <!-- Decorative dot texture: the Figma asset used as a mask so it follows the theme -->
+        <div
+            class="pointer-events-none absolute -top-3 right-6 flex w-40 flex-col gap-6 opacity-70 sm:w-65.5 lg:top-16 lg:right-6"
+            aria-hidden="true"
+        >
+            {
+                Array.from({ length: 10 }, () => (
+                    <div
+                        class="h-0.5 w-full bg-dot"
+                        style={`mask: url(${dotRow.src}) left / 262px 2px repeat-x; -webkit-mask: url(${dotRow.src}) left / 262px 2px repeat-x;`}
+                    />
+                ))
+            }
+        </div>
+
+        <p
+            class="relative flex items-center gap-2 text-[11px] font-medium uppercase text-muted"
+        >
+            <span class="size-1.5 shrink-0 rounded-full bg-ink"></span>
+            {site.eyebrow}
+        </p>
+
+        <div class="relative flex max-w-210 flex-col gap-6">
+            <h1
+                id="hero-title"
+                class="text-[40px] font-medium leading-[1.08] text-ink sm:text-5xl lg:text-[64px]"
+            >
+                <span class="sr-only">{site.name}, </span>{site.role}
+            </h1>
+            <p class="max-w-162.5 text-[17px] leading-[1.65] text-muted">
+                {site.tagline}
+            </p>
+            <div class="flex flex-wrap gap-3 pt-2">
+                <Button href="#projects" variant="primary" size="lg">
+                    View projects <ArrowDown size={16} />
+                </Button>
+                <Button href={site.resumeUrl} size="lg" download>
+                    Download resume <Download size={16} class="hidden sm:block" />
+                </Button>
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-6 pt-8">
+            <hr class="border-line" />
+            <div class="flex items-center justify-between gap-6">
+                <div class="flex flex-col gap-1">
+                    <p class="text-[28px] font-medium text-ink">
+                        {site.stats.value}
+                    </p>
+                    <p class="text-xs text-muted">{site.stats.label}</p>
+                </div>
+                <ul class="flex flex-col items-end gap-1 text-right text-xs text-muted">
+                    {site.stats.focus.map((item) => <li>{item}</li>)}
+                </ul>
+            </div>
+        </div>
+    </Container>
+</section>

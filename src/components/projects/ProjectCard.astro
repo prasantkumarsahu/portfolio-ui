@@ -1,0 +1,73 @@
+---
+import { ArrowUpRight } from "@lucide/astro";
+import type { Project } from "../../data/projects";
+import BrandIcon from "../ui/BrandIcon.astro";
+import Tag from "../ui/Tag.astro";
+import ProjectPreview from "./ProjectPreview.astro";
+
+interface Props {
+    project: Project;
+}
+
+const { project } = Astro.props;
+const external = project.href?.startsWith("http") ?? false;
+---
+
+<article
+    data-project
+    data-filters={project.filters.join(",")}
+    class:list={[
+        "group relative flex flex-col rounded-xl border border-line bg-surface p-2 transition-colors",
+        project.href && "hover:border-accent focus-within:border-accent",
+        project.featured && "md:col-span-2 lg:flex-row",
+    ]}
+>
+    <div class:list={[project.featured && "lg:w-1/2 lg:shrink-0"]}>
+        <ProjectPreview kind={project.preview} tall={project.featured} />
+    </div>
+
+    <div class="flex flex-1 flex-col gap-4 p-4 sm:p-6">
+        <div class="flex items-center justify-between text-[10px] uppercase">
+            <span class="text-muted">{project.category}</span>
+            {project.href && (
+                <span
+                    class="flex items-center gap-1 text-accent-ink opacity-0 transition-opacity group-hover:opacity-100"
+                    aria-hidden="true"
+                >
+                    Open <ArrowUpRight size={10} />
+                </span>
+            )}
+        </div>
+
+        <div class="flex flex-col gap-3">
+            <h3 class="text-xl font-medium leading-snug text-ink sm:text-[22px]">
+                {project.title}
+            </h3>
+            <p class="text-base leading-[1.65] text-muted">{project.summary}</p>
+        </div>
+
+        <ul class="flex flex-wrap gap-2" aria-label="Technologies">
+            {project.tags.map((tag) => <li><Tag>{tag}</Tag></li>)}
+        </ul>
+
+        <p class="mt-auto flex flex-wrap items-baseline gap-x-2 gap-y-1 border-t border-line pt-4">
+            <span class="text-[13px] font-medium text-ink">{project.highlight}</span>
+            <span class="text-[10px] text-muted">/ {project.context}</span>
+        </p>
+
+        {project.href && (
+        <a
+            href={project.href}
+            class="flex items-center justify-between border-t border-line pt-4 text-sm text-accent-ink after:absolute after:inset-0 after:rounded-xl hover:underline"
+            {...(external && { target: "_blank", rel: "noopener noreferrer" })}
+        >
+            <span class="flex items-center gap-2">
+                {external && <BrandIcon name="github" size={16} />}
+                {project.linkLabel ?? "View project"}
+                <span class="sr-only">: {project.title}{external && " (opens in a new tab)"}</span>
+            </span>
+            <ArrowUpRight size={18} />
+        </a>
+        )}
+    </div>
+</article>

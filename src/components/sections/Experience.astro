@@ -1,0 +1,110 @@
+---
+import { ArrowUpRight, Award, Minus, Plus } from "@lucide/astro";
+import { certifications, roles } from "../../data/experience";
+import Container from "../ui/Container.astro";
+import SectionHeader from "../ui/SectionHeader.astro";
+import Tag from "../ui/Tag.astro";
+---
+
+<section id="experience" aria-labelledby="experience-title" class="border-t border-line">
+    <Container class="flex flex-col gap-10 py-16 lg:py-22">
+        <SectionHeader
+            index="02"
+            eyebrow="Experience"
+            title="A steady path in software."
+            description="Three years of Java and React across fintech, HR tech and automotive, now at IBM."
+            headingId="experience-title"
+        />
+
+        <ol class="flex flex-col">
+            {
+                roles.map((role, i) => (
+                    <li class="grid grid-cols-[16px_1fr] gap-x-4 gap-y-3 pb-7 last:pb-0 lg:grid-cols-[16px_192px_1fr] lg:gap-x-8">
+                        <span class="flex justify-center pt-2" aria-hidden="true">
+                            <span
+                                class:list={[
+                                    "size-1.75 rounded-full",
+                                    role.current ? "bg-accent" : "border border-muted",
+                                ]}
+                            />
+                        </span>
+
+                        <div class="flex flex-col gap-3 pt-1">
+                            <p class="text-[13px] text-muted">{role.period}</p>
+                            {role.current && (
+                                <p class="text-[10px] font-medium uppercase text-accent-ink">
+                                    Current role
+                                </p>
+                            )}
+                        </div>
+
+                        <div
+                            class:list={[
+                                "col-start-2 flex flex-col gap-5 lg:col-start-3",
+                                i < roles.length - 1 && "border-b border-line pb-8",
+                            ]}
+                        >
+                            <details class="group" name="experience" open={i === 0}>
+                                <summary class="flex cursor-pointer list-none items-start justify-between gap-4 [&::-webkit-details-marker]:hidden">
+                                    <div class="flex flex-col gap-2">
+                                        <h3 class="text-xl font-medium text-ink sm:text-2xl">
+                                            {role.company}
+                                        </h3>
+                                        <p class="text-base text-muted sm:text-lg">{role.title}</p>
+                                        <p class="text-[13px] text-muted">{role.project}</p>
+                                    </div>
+                                    <span class="flex size-8 shrink-0 items-center justify-center rounded-md border border-line text-ink transition-colors group-open:border-accent group-open:text-accent-ink">
+                                        <Plus size={16} class="group-open:hidden" />
+                                        <Minus size={16} class="hidden group-open:block" />
+                                        <span class="sr-only">Toggle role notes</span>
+                                    </span>
+                                </summary>
+
+                                <div class="mt-5 rounded-lg bg-subtle p-4">
+                                    <p class="text-[10px] uppercase text-muted">
+                                        Highlights
+                                    </p>
+                                    <ul class="mt-3 flex flex-col gap-3 text-[13px] leading-[1.7] text-muted">
+                                        {role.notes.map((note) => (
+                                            <li class="flex gap-2 before:content-['•']">{note}</li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            </details>
+
+                            <ul class="flex flex-wrap gap-2" aria-label="Technologies">
+                                {role.tags.map((tag) => <li><Tag>{tag}</Tag></li>)}
+                            </ul>
+                        </div>
+                    </li>
+                ))
+            }
+        </ol>
+
+        <div class="flex flex-col gap-4 border-t border-line pt-8 lg:flex-row lg:gap-8">
+            <h3 class="text-[11px] font-medium uppercase text-muted lg:w-60 lg:shrink-0 lg:pl-12">
+                Certifications
+            </h3>
+            <ul class="flex flex-col gap-3">
+                {
+                    certifications.map((cert) => (
+                        <li class="flex items-start gap-3">
+                            <Award size={18} class="mt-0.5 shrink-0 text-muted" aria-hidden="true" />
+                            <p class="text-sm text-ink">
+                                {cert.name}
+                                <a
+                                    href={cert.href}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="ml-2 inline-flex items-center gap-0.5 text-xs text-accent-ink hover:underline"
+                                >
+                                    {cert.issuer} <ArrowUpRight size={12} />
+                                </a>
+                            </p>
+                        </li>
+                    ))
+                }
+            </ul>
+        </div>
+    </Container>
+</section>

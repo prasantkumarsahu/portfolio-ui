@@ -1,0 +1,26 @@
+---
+import { Moon, Sun } from "@lucide/astro";
+import Button from "../ui/Button.astro";
+---
+
+<Button size="icon" data-theme-toggle aria-label="Toggle dark mode">
+    <Moon size={18} class="dark:hidden" />
+    <Sun size={18} class="hidden dark:block" />
+</Button>
+
+<script>
+    const root = document.documentElement;
+
+    document.querySelectorAll<HTMLButtonElement>("[data-theme-toggle]").forEach((button) => {
+        const sync = () => button.setAttribute("aria-pressed", String(root.classList.contains("dark")));
+        sync();
+
+        button.addEventListener("click", () => {
+            const dark = root.classList.toggle("dark");
+            try {
+                localStorage.setItem("theme", dark ? "dark" : "light");
+            } catch {}
+            document.querySelectorAll("[data-theme-toggle]").forEach((b) => b.setAttribute("aria-pressed", String(dark)));
+        });
+    });
+</script>

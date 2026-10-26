@@ -1,0 +1,26 @@
+---
+import { navSections } from "../../data/site";
+
+interface Props {
+    class?: string;
+}
+
+const { class: className = "" } = Astro.props;
+---
+
+<nav aria-label="Sections" class={className}>
+    <ul class="flex justify-between gap-8 text-sm text-muted lg:justify-start">
+        {
+            navSections.map((section) => (
+                <li>
+                    <a
+                        href={`/#${section.id}`}
+                        class="transition-colors hover:text-ink"
+                    >
+                        {section.name}
+                    </a>
+                </li>
+            ))
+        }
+    </ul>
+</nav>

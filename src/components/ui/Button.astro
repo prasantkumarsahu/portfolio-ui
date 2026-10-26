@@ -1,0 +1,44 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type Props = HTMLAttributes<"button"> &
+    HTMLAttributes<"a"> & {
+        variant?: "primary" | "secondary";
+        size?: "md" | "lg" | "icon";
+        href?: string;
+    };
+
+const {
+    class: className = "",
+    variant = "secondary",
+    size = "md",
+    href,
+    type = "button",
+    ...rest
+} = Astro.props;
+
+const variants = {
+    primary: "bg-accent text-white border-accent hover:bg-accent-hover hover:border-accent-hover",
+    secondary: "bg-canvas text-ink border-line hover:bg-subtle",
+};
+
+const sizes = {
+    md: "h-10 px-4",
+    lg: "h-12 px-5",
+    icon: "size-10",
+};
+
+const classes = [
+    "inline-flex shrink-0 items-center justify-center gap-2 rounded-lg border text-sm font-medium whitespace-nowrap",
+    "cursor-pointer transition-colors",
+    variants[variant],
+    sizes[size],
+    className,
+];
+
+const Tag = href ? "a" : "button";
+---
+
+<Tag class:list={classes} href={href} type={href ? undefined : type} {...rest}>
+    <slot />
+</Tag>

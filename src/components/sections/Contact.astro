@@ -1,0 +1,58 @@
+---
+import { ArrowUpRight, Mail } from "@lucide/astro";
+import { contactChannels } from "../../data/site";
+import BrandIcon from "../ui/BrandIcon.astro";
+import Container from "../ui/Container.astro";
+import Eyebrow from "../ui/Eyebrow.astro";
+---
+
+<section id="contact" aria-labelledby="contact-title" class="border-t border-line">
+    <Container
+        class="flex flex-col gap-12 pt-16 pb-12 lg:flex-row lg:justify-between lg:pt-22 lg:pb-16"
+    >
+        <div class="flex max-w-156 flex-col gap-6">
+            <Eyebrow>05 / Contact</Eyebrow>
+            <h2
+                id="contact-title"
+                class="text-[36px] font-medium leading-[1.12] text-ink sm:text-5xl"
+            >
+                Let’s build something together
+            </h2>
+            <p class="text-[17px] leading-[1.65] text-muted">
+                Have a system to build or a problem to untangle? Let’s start a conversation.
+            </p>
+        </div>
+
+        <div class="flex flex-col gap-6 lg:w-[384px]">
+            <p class="text-[10px] uppercase text-muted">Get in touch</p>
+            <ul class="flex flex-col gap-4">
+                {
+                    contactChannels.map((channel) => (
+                        <li>
+                            <a
+                                href={channel.href}
+                                class="group flex items-center gap-4"
+                                {...(channel.href.startsWith("http") && { target: "_blank", rel: "noopener noreferrer" })}
+                            >
+                                <span class="text-muted">
+                                    {channel.icon === "mail" ? (
+                                        <Mail size={18} />
+                                    ) : (
+                                        <BrandIcon name={channel.icon} />
+                                    )}
+                                </span>
+                                <span class="flex flex-1 flex-col">
+                                    <span class="text-[10px] text-muted">{channel.label}</span>
+                                    <span class="text-sm text-accent-ink group-hover:underline">
+                                        {channel.value}
+                                    </span>
+                                </span>
+                                <ArrowUpRight size={16} class="text-accent-ink" />
+                            </a>
+                        </li>
+                    ))
+                }
+            </ul>
+        </div>
+    </Container>
+</section>

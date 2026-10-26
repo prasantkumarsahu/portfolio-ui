@@ -1,0 +1,201 @@
+---
+import {
+    ArrowRight,
+    ArrowUpRight,
+    CalendarDays,
+    Clock3,
+    Database,
+    Files,
+    ScanText,
+    Users,
+} from "@lucide/astro";
+import type { ProjectPreview } from "../../data/projects";
+
+interface Props {
+    kind: ProjectPreview;
+    /** Fills the card height instead of the fixed 224px (featured cards) */
+    tall?: boolean;
+}
+
+const { kind, tall = false } = Astro.props;
+
+const pipeline = [
+    { name: "Documents", Icon: Files },
+    { name: "Extract", Icon: ScanText },
+    { name: "Structured data", Icon: Database },
+];
+
+const parts = [
+    { name: "Housing", active: false },
+    { name: "Drive unit", active: true },
+    { name: "Base plate", active: false },
+];
+
+const tiles = [
+    { name: "Team directory", Icon: Users },
+    { name: "Time off", Icon: CalendarDays },
+    { name: "Attendance", Icon: Clock3 },
+];
+
+// Bar heights (px) from the design, the last bar is highlighted
+const bars = [40, 60, 48, 82, 68, 92, 78, 110];
+
+// Kalinga sample adapted from the kalinga-lang README
+const kalingaSource = [
+    [["kw", "class "], ["ty", "Dog"], ["", " : "], ["ty", "Animal"], ["", " {"]],
+    [["", "    "], ["kw", "override fn "], ["", "sound() -> "], ["ty", "str"], ["", " {"]],
+    [["", "        "], ["kw", "return "], ["str", '"woof"']],
+    [["", "    }"]],
+    [["", "}"]],
+    [["kw", "fn "], ["", "main() {"]],
+    [["", "    println("], ["ty", "Dog"], ["", "("], ["str", '"Rex"'], ["", ").show())"]],
+    [["", "}"]],
+];
+const tokenColor: Record<string, string> = { kw: "text-accent-ink", ty: "text-ink font-medium", str: "text-muted", "": "text-ink" };
+const compileSteps = ["main.kl", "Rust", "rustc -O", "native"];
+
+const label = "text-[10px] uppercase text-muted";
+const box = "rounded-lg border border-line bg-surface";
+---
+
+<div
+    class:list={[
+        "flex flex-col gap-4 overflow-hidden rounded-lg bg-subtle p-5 sm:p-8",
+        tall ? "min-h-56 lg:h-full" : "h-56",
+    ]}
+    aria-hidden="true"
+>
+    {
+        kind === "compiler" && (
+            <>
+                <div class="flex items-center justify-between">
+                    <span class={label}>Compiler / Pipeline</span>
+                    <span class="font-mono text-[10px] text-muted">kalinga build</span>
+                </div>
+                <pre class:list={[box, "flex-1 overflow-hidden p-4 font-mono text-[11px] leading-[1.7] sm:text-xs"]}><code>{kalingaSource.map((line) => (
+                    <span class="block">{line.map(([type, text]) => <span class={tokenColor[type]}>{text}</span>)}</span>
+                ))}</code></pre>
+                <p class="flex flex-wrap items-center gap-2 font-mono text-[10px] text-muted">
+                    {compileSteps.map((step, i) => (
+                        <>
+                            <span class:list={[i === compileSteps.length - 1 && "text-ink"]}>{step}</span>
+                            {i < compileSteps.length - 1 && <ArrowRight size={10} />}
+                        </>
+                    ))}
+                </p>
+            </>
+        )
+    }
+
+    {
+        kind === "document" && (
+            <>
+                <div class="flex items-center justify-between">
+                    <span class={label}>Document pipeline</span>
+                    <span class="flex items-center gap-1 text-[10px] text-muted">
+                        <span class="size-1 rounded-full bg-ink" />
+                        Processed
+                    </span>
+                </div>
+                <div class="flex flex-1 items-center gap-2 sm:gap-4">
+                    {pipeline.map(({ name, Icon }, i) => (
+                        <>
+                            <div class:list={[box, "flex h-26 flex-1 flex-col items-center justify-center gap-3 px-2 text-center"]}>
+                                <Icon size={22} class="text-ink" stroke-width={1.5} />
+                                <span class="text-[11px] text-ink">{name}</span>
+                            </div>
+                            {i < pipeline.length - 1 && <ArrowRight size={12} class="shrink-0 text-muted" />}
+                        </>
+                    ))}
+                </div>
+                <p class="flex items-center gap-2 text-[10px] uppercase text-muted">
+                    PDF / Image <ArrowRight size={10} /> Extract <ArrowRight size={10} /> Validate
+                </p>
+            </>
+        )
+    }
+
+    {
+        kind === "assembly" && (
+            <>
+                <div class="flex items-center justify-between">
+                    <span class={label}>Assembly / Explorer</span>
+                    <span class="flex items-center gap-1 text-[10px] text-muted">
+                        Isometric <ArrowUpRight size={10} />
+                    </span>
+                </div>
+                <div class="flex flex-1 items-center gap-6">
+                    <ul class="flex w-32 shrink-0 flex-col gap-3">
+                        {parts.map((part) => (
+                            <li class:list={["flex items-center gap-2 text-[10px]", part.active ? "text-ink" : "text-muted"]}>
+                                <span class:list={["size-1.25 rounded-full", part.active ? "bg-ink" : "border border-muted"]} />
+                                {part.name}
+                            </li>
+                        ))}
+                    </ul>
+                    <svg viewBox="0 0 240 140" class="h-35 w-60 max-w-full text-muted" fill="none" stroke="currentColor" stroke-width="1">
+                        {[0, 1, 2, 3].map((i) => {
+                            const y = 18 + i * 26;
+                            return (
+                                <g class={i === 1 ? "text-ink" : undefined} stroke={i === 1 ? "var(--ink)" : undefined}>
+                                    <path d={`M120 ${y} L220 ${y + 26} L120 ${y + 52} L20 ${y + 26} Z`} fill="var(--subtle)" />
+                                    <path d={`M20 ${y + 26} v6 L120 ${y + 58} L220 ${y + 32} v-6`} />
+                                    <path d={`M120 ${y + 52} v6`} />
+                                </g>
+                            );
+                        })}
+                    </svg>
+                </div>
+            </>
+        )
+    }
+
+    {
+        kind === "people" && (
+            <>
+                <div class="flex items-center justify-between">
+                    <span class={label}>People / Overview</span>
+                    <span class="text-[10px] text-muted">Workspace preview</span>
+                </div>
+                <div class="grid grid-cols-3 gap-3">
+                    {tiles.map(({ name, Icon }) => (
+                        <div class:list={[box, "flex h-16.75 flex-col justify-between p-3"]}>
+                            <Icon size={18} class="text-ink" stroke-width={1.5} />
+                            <span class="truncate text-[11px] text-ink">{name}</span>
+                        </div>
+                    ))}
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="size-5 shrink-0 rounded-full bg-line" />
+                    <span class="h-0.5 w-24 rounded-full bg-line" />
+                    <span class="h-0.5 w-12 rounded-full bg-line" />
+                </div>
+            </>
+        )
+    }
+
+    {
+        kind === "reporting" && (
+            <>
+                <div class="flex items-center justify-between">
+                    <span class={label}>Fund / Reporting</span>
+                    <span class="text-[10px] text-muted">FY 2026</span>
+                </div>
+                <div class="flex h-30 items-end gap-2 sm:gap-4">
+                    {bars.map((height, i) => (
+                        <span
+                            class:list={["flex-1", i === bars.length - 1 ? "bg-ink" : "bg-line"]}
+                            style={`height: ${height}px`}
+                        />
+                    ))}
+                </div>
+                <div class="flex justify-between text-[10px] text-muted">
+                    <span>Q1</span>
+                    <span>Q2</span>
+                    <span>Q3</span>
+                    <span>Q4 · illustrative</span>
+                </div>
+            </>
+        )
+    }
+</div>

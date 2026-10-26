@@ -1,0 +1,22 @@
+---
+import { ArrowUp } from "@lucide/astro";
+import { site } from "../../data/site";
+import Container from "../ui/Container.astro";
+---
+
+<footer>
+    <Container>
+        <div
+            class="flex flex-col gap-3 border-t border-line pt-6 pb-8 text-xs text-muted sm:flex-row sm:items-center sm:justify-between"
+        >
+            <p>&copy; {new Date().getFullYear()} {site.name}</p>
+            <p>{site.colophon}</p>
+            <a
+                href="#top"
+                class="inline-flex items-center gap-1 text-accent-ink hover:underline"
+            >
+                Back to top <ArrowUp size={12} />
+            </a>
+        </div>
+    </Container>
+</footer>

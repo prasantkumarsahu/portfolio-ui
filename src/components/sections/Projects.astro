@@ -1,0 +1,71 @@
+---
+import { projectFilters, projects } from "../../data/projects";
+import ProjectCard from "../projects/ProjectCard.astro";
+import Container from "../ui/Container.astro";
+import SectionHeader from "../ui/SectionHeader.astro";
+
+const filters = [{ label: "All projects", value: "all" }, ...projectFilters.map((f) => ({ label: f, value: f }))];
+
+const chip =
+    "inline-flex items-center rounded-md border px-2.5 py-1.5 text-xs leading-none cursor-pointer transition-colors";
+---
+
+<section id="projects" aria-labelledby="projects-title" class="border-t border-line">
+    <Container class="flex flex-col gap-8 pt-12 pb-16 lg:pt-16 lg:pb-22">
+        <SectionHeader
+            index="01"
+            eyebrow="Selected work"
+            title="Systems, built end to end."
+            description="Production systems for automotive, HR and private-equity clients, plus a programming language I built."
+            headingId="projects-title"
+        />
+
+        <div class="flex flex-wrap items-center gap-2" role="group" aria-label="Filter projects">
+            {
+                filters.map((filter) => (
+                    <button
+                        type="button"
+                        data-filter={filter.value}
+                        aria-pressed={filter.value === "all" ? "true" : "false"}
+                        class:list={[
+                            chip,
+                            "border-line bg-subtle text-muted hover:text-ink",
+                            "aria-pressed:border-accent aria-pressed:bg-surface aria-pressed:text-accent-ink",
+                        ]}
+                    >
+                        {filter.label}
+                    </button>
+                ))
+            }
+            <span class="ml-1 text-xs text-muted" data-project-count aria-live="polite">
+                {projects.length} projects
+            </span>
+        </div>
+
+        <div class="grid gap-6 md:grid-cols-2">
+            {projects.map((project) => <ProjectCard project={project} />)}
+        </div>
+    </Container>
+</section>
+
+<script>
+    const buttons = document.querySelectorAll<HTMLButtonElement>("[data-filter]");
+    const cards = document.querySelectorAll<HTMLElement>("[data-project]");
+    const count = document.querySelector<HTMLElement>("[data-project-count]");
+
+    buttons.forEach((button) => {
+        button.addEventListener("click", () => {
+            const value = button.dataset.filter!;
+            let visible = 0;
+
+            buttons.forEach((b) => b.setAttribute("aria-pressed", String(b === button)));
+            cards.forEach((card) => {
+                const match = value === "all" || card.dataset.filters!.split(",").includes(value);
+                card.hidden = !match;
+                if (match) visible++;
+            });
+
+            if (count) count.textContent = `${visible} ${visible === 1 ? "project" : "projects"}`;
+        });
+    });
+</script>

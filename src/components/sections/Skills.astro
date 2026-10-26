@@ -1,0 +1,90 @@
+---
+import { skillCategories } from "../../data/skills";
+import Container from "../ui/Container.astro";
+import SectionHeader from "../ui/SectionHeader.astro";
+import Tag from "../ui/Tag.astro";
+
+const pad = (n: number) => String(n).padStart(2, "0");
+---
+
+<section id="skills" aria-labelledby="skills-title" class="border-t border-line">
+    <Container class="flex flex-col gap-8 py-16 lg:py-20">
+        <SectionHeader
+            index="03"
+            eyebrow="Technical toolkit"
+            title="The right tools. A solid foundation."
+            description="Java and Spring Boot at the core, React.js and Next.js on the frontend, AWS and Docker to ship."
+            headingId="skills-title"
+        />
+
+        <div class="flex flex-col gap-6" data-tabs>
+            <div
+                role="tablist"
+                aria-label="Skill categories"
+                class="flex gap-6 overflow-x-auto border-b border-line"
+            >
+                {
+                    skillCategories.map((category, i) => (
+                        <button
+                            type="button"
+                            role="tab"
+                            id={`tab-${category.id}`}
+                            aria-controls={`panel-${category.id}`}
+                            aria-selected={i === 0 ? "true" : "false"}
+                            tabindex={i === 0 ? 0 : -1}
+                            class="-mb-px flex h-12 shrink-0 cursor-pointer items-center gap-2 border-b-2 border-transparent px-2 text-sm whitespace-nowrap text-muted transition-colors hover:text-ink aria-selected:border-accent aria-selected:font-medium aria-selected:text-accent-ink"
+                        >
+                            {category.name}
+                            <span class="text-[10px] font-normal">{pad(category.skills.length)}</span>
+                        </button>
+                    ))
+                }
+            </div>
+
+            {
+                skillCategories.map((category, i) => (
+                    <div
+                        role="tabpanel"
+                        id={`panel-${category.id}`}
+                        aria-labelledby={`tab-${category.id}`}
+                        hidden={i !== 0}
+                        class="flex flex-col gap-6"
+                    >
+                        <ul class="flex flex-wrap gap-3">
+                            {category.skills.map((skill) => <li><Tag>{skill}</Tag></li>)}
+                        </ul>
+                        <p class="text-xs text-muted">
+                            {category.name} / {category.skills.length} skills
+                        </p>
+                    </div>
+                ))
+            }
+        </div>
+    </Container>
+</section>
+
+<script>
+    document.querySelectorAll<HTMLElement>("[data-tabs]").forEach((root) => {
+        const tabs = [...root.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+
+        const select = (tab: HTMLButtonElement) => {
+            tabs.forEach((t) => {
+                const selected = t === tab;
+                t.setAttribute("aria-selected", String(selected));
+                t.tabIndex = selected ? 0 : -1;
+                root.querySelector<HTMLElement>(`#${t.getAttribute("aria-controls")}`)!.hidden = !selected;
+            });
+        };
+
+        tabs.forEach((tab, i) => {
+            tab.addEventListener("click", () => select(tab));
+            tab.addEventListener("keydown", (event) => {
+                const step = event.key === "ArrowRight" ? 1 : event.key === "ArrowLeft" ? -1 : 0;
+                if (!step) return;
+                const next = tabs[(i + step + tabs.length) % tabs.length];
+                select(next);
+                next.focus();
+            });
+        });
+    });
+</script>
