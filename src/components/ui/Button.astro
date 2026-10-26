@@ -18,7 +18,8 @@ const {
 } = Astro.props;
 
 const variants = {
-    primary: "bg-accent text-white border-accent hover:bg-accent-hover hover:border-accent-hover",
+    primary:
+        "bg-accent text-white border-accent hover:bg-accent-hover hover:border-accent-hover hover:shadow-[0_8px_20px_-8px_var(--accent)]",
     secondary: "bg-canvas text-ink border-line hover:bg-subtle",
 };
 
@@ -29,8 +30,8 @@ const sizes = {
 };
 
 const classes = [
-    "inline-flex shrink-0 items-center justify-center gap-2 rounded-lg border text-sm font-medium whitespace-nowrap",
-    "cursor-pointer transition-colors",
+    "group/btn inline-flex shrink-0 items-center justify-center gap-2 rounded-lg border text-sm font-medium whitespace-nowrap",
+    "cursor-pointer transition-[color,background-color,border-color,transform,box-shadow] duration-200 active:scale-[0.97]",
     variants[variant],
     sizes[size],
     className,

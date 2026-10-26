@@ -54,6 +54,14 @@ const kalingaSource = [
 const tokenColor: Record<string, string> = { kw: "text-accent-ink", ty: "text-ink font-medium", str: "text-muted", "": "text-ink" };
 const compileSteps = ["main.kl", "Rust", "rustc -O", "native"];
 
+// Assembly layers move apart on card hover, outer layers furthest
+const layerSpread = [
+    "group-hover:-translate-y-1.5",
+    "group-hover:-translate-y-0.5",
+    "group-hover:translate-y-0.5",
+    "group-hover:translate-y-1.5",
+];
+
 const label = "text-[10px] uppercase text-muted";
 const box = "rounded-lg border border-line bg-surface";
 ---
@@ -72,9 +80,8 @@ const box = "rounded-lg border border-line bg-surface";
                     <span class={label}>Compiler / Pipeline</span>
                     <span class="font-mono text-[10px] text-muted">kalinga build</span>
                 </div>
-                <pre class:list={[box, "flex-1 overflow-hidden p-4 font-mono text-[11px] leading-[1.7] sm:text-xs"]}><code>{kalingaSource.map((line) => (
-                    <span class="block">{line.map(([type, text]) => <span class={tokenColor[type]}>{text}</span>)}</span>
-                ))}</code></pre>
+                {/* Keep everything inside <pre> on one line: whitespace there renders literally */}
+                <pre class:list={[box, "flex-1 overflow-hidden p-4 font-mono text-[11px] leading-[1.7] sm:text-xs"]}><code>{kalingaSource.map((line, i) => <span class="block">{line.map(([type, text]) => <span class={tokenColor[type]}>{text}</span>)}{i === kalingaSource.length - 1 && <span class="ml-1 inline-block h-3 w-1.5 translate-y-0.5 bg-accent motion-safe:animate-blink" />}</span>)}</code></pre>
                 <p class="flex flex-wrap items-center gap-2 font-mono text-[10px] text-muted">
                     {compileSteps.map((step, i) => (
                         <>
@@ -93,14 +100,17 @@ const box = "rounded-lg border border-line bg-surface";
                 <div class="flex items-center justify-between">
                     <span class={label}>Document pipeline</span>
                     <span class="flex items-center gap-1 text-[10px] text-muted">
-                        <span class="size-1 rounded-full bg-ink" />
+                        <span class="size-1 rounded-full bg-ink motion-safe:animate-pulse" />
                         Processed
                     </span>
                 </div>
                 <div class="flex flex-1 items-center gap-2 sm:gap-4">
                     {pipeline.map(({ name, Icon }, i) => (
                         <>
-                            <div class:list={[box, "flex h-26 flex-1 flex-col items-center justify-center gap-3 px-2 text-center"]}>
+                            <div
+                                class:list={[box, "flex h-26 flex-1 flex-col items-center justify-center gap-3 px-2 text-center transition-[translate,border-color] duration-500 ease-out group-hover:-translate-y-1 group-hover:border-accent/40"]}
+                                style={`transition-delay: ${i * 80}ms`}
+                            >
                                 <Icon size={22} class="text-ink" stroke-width={1.5} />
                                 <span class="text-[11px] text-ink">{name}</span>
                             </div>
@@ -137,7 +147,10 @@ const box = "rounded-lg border border-line bg-surface";
                         {[0, 1, 2, 3].map((i) => {
                             const y = 18 + i * 26;
                             return (
-                                <g class={i === 1 ? "text-ink" : undefined} stroke={i === 1 ? "var(--ink)" : undefined}>
+                                <g
+                                    class:list={["transition-transform duration-500 ease-out", layerSpread[i]]}
+                                    stroke={i === 1 ? "var(--ink)" : undefined}
+                                >
                                     <path d={`M120 ${y} L220 ${y + 26} L120 ${y + 52} L20 ${y + 26} Z`} fill="var(--subtle)" />
                                     <path d={`M20 ${y + 26} v6 L120 ${y + 58} L220 ${y + 32} v-6`} />
                                     <path d={`M120 ${y + 52} v6`} />
@@ -158,8 +171,11 @@ const box = "rounded-lg border border-line bg-surface";
                     <span class="text-[10px] text-muted">Workspace preview</span>
                 </div>
                 <div class="grid grid-cols-3 gap-3">
-                    {tiles.map(({ name, Icon }) => (
-                        <div class:list={[box, "flex h-16.75 flex-col justify-between p-3"]}>
+                    {tiles.map(({ name, Icon }, i) => (
+                        <div
+                            class:list={[box, "flex h-16.75 flex-col justify-between p-3 transition-[translate,border-color] duration-500 ease-out group-hover:-translate-y-1 group-hover:border-accent/40"]}
+                            style={`transition-delay: ${i * 80}ms`}
+                        >
                             <Icon size={18} class="text-ink" stroke-width={1.5} />
                             <span class="truncate text-[11px] text-ink">{name}</span>
                         </div>
@@ -184,8 +200,8 @@ const box = "rounded-lg border border-line bg-surface";
                 <div class="flex h-30 items-end gap-2 sm:gap-4">
                     {bars.map((height, i) => (
                         <span
-                            class:list={["flex-1", i === bars.length - 1 ? "bg-ink" : "bg-line"]}
-                            style={`height: ${height}px`}
+                            class:list={["reveal-grow flex-1", i === bars.length - 1 ? "bg-ink" : "bg-line"]}
+                            style={`height: ${height}px; --grow-i: ${i}`}
                         />
                     ))}
                 </div>

@@ -10,8 +10,14 @@ const year = new Date().getFullYear();
 ---
 
 <header
-    class="z-40 bg-canvas/85 backdrop-blur-md lg:sticky lg:top-0 lg:border-b lg:border-transparent"
+    data-header
+    class="relative z-40 bg-canvas/85 backdrop-blur-md transition-[border-color,box-shadow] duration-300 lg:sticky lg:top-0 lg:border-b lg:border-transparent lg:data-scrolled:border-line lg:data-scrolled:shadow-[0_8px_24px_-16px_rgb(0_0_0/0.25)]"
 >
+    <!-- Reading progress, driven by scroll in CSS -->
+    <div
+        class="scroll-progress pointer-events-none absolute inset-x-0 bottom-0 hidden h-px bg-accent lg:block"
+        aria-hidden="true"
+    ></div>
     <Container
         class="grid grid-cols-[1fr_auto] items-center gap-x-4 gap-y-6 py-6 lg:flex lg:justify-between"
     >
@@ -34,7 +40,11 @@ const year = new Date().getFullYear();
                 href="/#contact"
                 class="col-start-2 row-start-3 justify-self-end"
             >
-                Ask about me <Sparkles size={16} />
+                Ask about me
+                <Sparkles
+                    size={16}
+                    class="transition-transform duration-300 group-hover/btn:scale-110 group-hover/btn:rotate-12"
+                />
             </Button>
         </div>
     </Container>

@@ -7,18 +7,24 @@ import ProjectPreview from "./ProjectPreview.astro";
 
 interface Props {
     project: Project;
+    /** Position in the grid, used to stagger the scroll reveal */
+    index?: number;
 }
 
-const { project } = Astro.props;
+const { project, index = 0 } = Astro.props;
 const external = project.href?.startsWith("http") ?? false;
 ---
 
 <article
     data-project
+    data-reveal
+    data-spotlight
     data-filters={project.filters.join(",")}
+    style={`--reveal-i: ${index % 2}`}
     class:list={[
-        "group relative flex flex-col rounded-xl border border-line bg-surface p-2 transition-colors",
-        project.href && "hover:border-accent focus-within:border-accent",
+        "group relative flex flex-col rounded-xl border border-line bg-surface p-2",
+        "transition-[translate,border-color,box-shadow] duration-300 ease-out",
+        "hover:-translate-y-1 hover:border-accent hover:shadow-[0_16px_40px_-20px_rgb(0_0_0/0.3)] focus-within:border-accent",
         project.featured && "md:col-span-2 lg:flex-row",
     ]}
 >
@@ -66,7 +72,10 @@ const external = project.href?.startsWith("http") ?? false;
                 {project.linkLabel ?? "View project"}
                 <span class="sr-only">: {project.title}{external && " (opens in a new tab)"}</span>
             </span>
-            <ArrowUpRight size={18} />
+            <ArrowUpRight
+                size={18}
+                class="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+            />
         </a>
         )}
     </div>

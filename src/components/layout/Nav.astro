@@ -15,7 +15,8 @@ const { class: className = "" } = Astro.props;
                 <li>
                     <a
                         href={`/#${section.id}`}
-                        class="transition-colors hover:text-ink"
+                        data-nav-link
+                        class="relative transition-colors duration-300 after:absolute after:inset-x-0 after:-bottom-1.5 after:h-px after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-300 after:ease-out hover:text-ink hover:after:scale-x-100 aria-current:text-ink aria-current:after:scale-x-100"
                     >
                         {section.name}
                     </a>

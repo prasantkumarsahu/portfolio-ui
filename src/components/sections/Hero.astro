@@ -8,49 +8,78 @@ import Container from "../ui/Container.astro";
 
 <section aria-labelledby="hero-title" class="relative overflow-hidden">
     <Container class="relative flex flex-col gap-10 pt-12 pb-14 lg:pt-22">
-        <!-- Decorative dot texture: the Figma asset used as a mask so it follows the theme -->
+        <!-- Decorative dot texture: the Figma asset used as a mask so it follows the theme.
+             Rows drift in alternating directions with a staggered brightness wave; the
+             container's edge fade hides dots entering and leaving. -->
         <div
-            class="pointer-events-none absolute -top-3 right-6 flex w-40 flex-col gap-6 opacity-70 sm:w-65.5 lg:top-16 lg:right-6"
+            class="pointer-events-none absolute -top-3 right-6 flex w-40 flex-col gap-6 opacity-70 motion-safe:animate-fade-up [mask-image:linear-gradient(to_right,transparent,black_18%,black_82%,transparent)] sm:w-65.5 lg:top-16 lg:right-6"
+            style="animation-delay: 300ms"
             aria-hidden="true"
         >
             {
-                Array.from({ length: 10 }, () => (
+                Array.from({ length: 10 }, (_, row) => (
                     <div
-                        class="h-0.5 w-full bg-dot"
-                        style={`mask: url(${dotRow.src}) left / 262px 2px repeat-x; -webkit-mask: url(${dotRow.src}) left / 262px 2px repeat-x;`}
+                        class="h-0.5 w-full bg-dot motion-safe:animate-dots"
+                        style={[
+                            `mask: url(${dotRow.src}) 0 0 / 262px 2px repeat-x`,
+                            `-webkit-mask: url(${dotRow.src}) 0 0 / 262px 2px repeat-x`,
+                            `animation-direction: ${row % 2 ? "reverse" : "normal"}, normal`,
+                            `animation-delay: ${-row * 1.7}s, ${-row * 0.9}s`,
+                        ].join("; ")}
                     />
                 ))
             }
         </div>
 
         <p
-            class="relative flex items-center gap-2 text-[11px] font-medium uppercase text-muted"
+            class="relative flex items-center gap-2 text-[11px] font-medium uppercase text-muted motion-safe:animate-fade-up"
         >
-            <span class="size-1.5 shrink-0 rounded-full bg-ink"></span>
+            <span class="relative flex size-1.5 shrink-0">
+                <span class="absolute inset-0 rounded-full bg-ink opacity-40 motion-safe:animate-ping"></span>
+                <span class="relative size-1.5 rounded-full bg-ink"></span>
+            </span>
             {site.eyebrow}
         </p>
 
         <div class="relative flex max-w-210 flex-col gap-6">
             <h1
                 id="hero-title"
-                class="text-[40px] font-medium leading-[1.08] text-ink sm:text-5xl lg:text-[64px]"
+                class="text-[40px] font-medium leading-[1.08] text-ink motion-safe:animate-fade-up sm:text-5xl lg:text-[64px]"
+                style="animation-delay: 80ms"
             >
                 <span class="sr-only">{site.name}, </span>{site.role}
             </h1>
-            <p class="max-w-162.5 text-[17px] leading-[1.65] text-muted">
+            <p
+                class="max-w-162.5 text-[17px] leading-[1.65] text-muted motion-safe:animate-fade-up"
+                style="animation-delay: 180ms"
+            >
                 {site.tagline}
             </p>
-            <div class="flex flex-wrap gap-3 pt-2">
+            <div
+                class="flex flex-wrap gap-3 pt-2 motion-safe:animate-fade-up"
+                style="animation-delay: 280ms"
+            >
                 <Button href="#projects" variant="primary" size="lg">
-                    View projects <ArrowDown size={16} />
+                    View projects
+                    <ArrowDown
+                        size={16}
+                        class="transition-transform duration-300 group-hover/btn:translate-y-0.5"
+                    />
                 </Button>
                 <Button href={site.resumeUrl} size="lg" download>
-                    Download resume <Download size={16} class="hidden sm:block" />
+                    Download resume
+                    <Download
+                        size={16}
+                        class="hidden transition-transform duration-300 group-hover/btn:translate-y-0.5 sm:block"
+                    />
                 </Button>
             </div>
         </div>
 
-        <div class="flex flex-col gap-6 pt-8">
+        <div
+            class="flex flex-col gap-6 pt-8 motion-safe:animate-fade-up"
+            style="animation-delay: 400ms"
+        >
             <hr class="border-line" />
             <div class="flex items-center justify-between gap-6">
                 <div class="flex flex-col gap-1">

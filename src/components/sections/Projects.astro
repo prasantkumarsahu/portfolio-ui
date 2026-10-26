@@ -7,7 +7,7 @@ import SectionHeader from "../ui/SectionHeader.astro";
 const filters = [{ label: "All projects", value: "all" }, ...projectFilters.map((f) => ({ label: f, value: f }))];
 
 const chip =
-    "inline-flex items-center rounded-md border px-2.5 py-1.5 text-xs leading-none cursor-pointer transition-colors";
+    "inline-flex items-center rounded-md border px-2.5 py-1.5 text-xs leading-none cursor-pointer transition-[color,background-color,border-color,transform] duration-200";
 ---
 
 <section id="projects" aria-labelledby="projects-title" class="border-t border-line">
@@ -29,7 +29,7 @@ const chip =
                         aria-pressed={filter.value === "all" ? "true" : "false"}
                         class:list={[
                             chip,
-                            "border-line bg-subtle text-muted hover:text-ink",
+                            "border-line bg-subtle text-muted hover:border-muted/40 hover:text-ink active:scale-95",
                             "aria-pressed:border-accent aria-pressed:bg-surface aria-pressed:text-accent-ink",
                         ]}
                     >
@@ -43,12 +43,14 @@ const chip =
         </div>
 
         <div class="grid gap-6 md:grid-cols-2">
-            {projects.map((project) => <ProjectCard project={project} />)}
+            {projects.map((project, i) => <ProjectCard project={project} index={i} />)}
         </div>
     </Container>
 </section>
 
 <script>
+    import { staggerIn } from "../../scripts/motion";
+
     const buttons = document.querySelectorAll<HTMLButtonElement>("[data-filter]");
     const cards = document.querySelectorAll<HTMLElement>("[data-project]");
     const count = document.querySelector<HTMLElement>("[data-project-count]");
@@ -57,13 +59,19 @@ const chip =
         button.addEventListener("click", () => {
             const value = button.dataset.filter!;
             let visible = 0;
+            const shown: HTMLElement[] = [];
 
             buttons.forEach((b) => b.setAttribute("aria-pressed", String(b === button)));
             cards.forEach((card) => {
                 const match = value === "all" || card.dataset.filters!.split(",").includes(value);
                 card.hidden = !match;
-                if (match) visible++;
+                if (match) {
+                    visible++;
+                    shown.push(card);
+                }
             });
+
+            staggerIn(shown, 70);
 
             if (count) count.textContent = `${visible} ${visible === 1 ? "project" : "projects"}`;
         });

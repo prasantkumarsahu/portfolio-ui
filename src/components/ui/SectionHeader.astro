@@ -12,7 +12,7 @@ interface Props {
 const { index, eyebrow, title, description, headingId } = Astro.props;
 ---
 
-<div class="flex flex-col gap-4">
+<div class="flex flex-col gap-4" data-reveal>
     <Eyebrow>{index} / {eyebrow}</Eyebrow>
     <div
         class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between lg:gap-12"

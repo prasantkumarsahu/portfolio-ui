@@ -19,13 +19,22 @@ const icons = { workflow: Workflow, cpu: Cpu, database: Database, plug: Plug };
 
         <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
             {
-                aiExplorations.map((item) => {
+                aiExplorations.map((item, index) => {
                     const Icon = icons[item.icon];
                     return (
-                        <article class="flex flex-col gap-6 rounded-xl border border-line bg-surface p-6">
+                        <article
+                            data-reveal
+                            data-spotlight
+                            style={`--reveal-i: ${index}`}
+                            class="group relative flex flex-col gap-6 rounded-xl border border-line bg-surface p-6 transition-[translate,border-color,box-shadow] duration-300 ease-out hover:-translate-y-1 hover:border-accent/60 hover:shadow-[0_16px_40px_-20px_rgb(0_0_0/0.3)]"
+                        >
                             <div class="flex items-center justify-between">
-                                <span class="flex size-10 items-center justify-center rounded-lg bg-subtle text-ink">
-                                    <Icon size={20} stroke-width={1.75} />
+                                <span class="flex size-10 items-center justify-center rounded-lg bg-subtle text-ink transition-colors duration-300 group-hover:bg-accent/10 group-hover:text-accent-ink">
+                                    <Icon
+                                        size={20}
+                                        stroke-width={1.75}
+                                        class="transition-transform duration-500 ease-out group-hover:scale-110"
+                                    />
                                 </span>
                                 <span class="text-[10px] uppercase text-muted">In production</span>
                             </div>
@@ -42,7 +51,14 @@ const icons = { workflow: Workflow, cpu: Cpu, database: Database, plug: Plug };
                                 {item.flow.map((stage, i) => (
                                     <li class="flex items-center gap-2">
                                         {stage}
-                                        {i < item.flow.length - 1 && <ArrowRight size={12} aria-hidden="true" />}
+                                        {i < item.flow.length - 1 && (
+                                            <ArrowRight
+                                                size={12}
+                                                aria-hidden="true"
+                                                class="transition-transform duration-300 group-hover:translate-x-0.5"
+                                                style={`transition-delay: ${i * 90}ms`}
+                                            />
+                                        )}
                                     </li>
                                 ))}
                             </ol>

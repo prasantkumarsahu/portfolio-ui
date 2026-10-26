@@ -40,6 +40,8 @@ const { title = site.title, description = site.description, noindex = false } = 
                 } catch {}
                 const dark = theme ? theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
                 document.documentElement.classList.toggle("dark", dark);
+                // Enables scroll-reveal styles; without JS, content simply shows
+                document.documentElement.classList.add("js");
             })();
         </script>
     </head>
@@ -55,5 +57,8 @@ const { title = site.title, description = site.description, noindex = false } = 
             <slot />
         </main>
         <Footer />
+        <script>
+            import "../scripts/motion";
+        </script>
     </body>
 </html>

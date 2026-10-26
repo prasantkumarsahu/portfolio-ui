@@ -13,9 +13,10 @@ import Container from "../ui/Container.astro";
             <p>{site.colophon}</p>
             <a
                 href="#top"
-                class="inline-flex items-center gap-1 text-accent-ink hover:underline"
+                class="group inline-flex items-center gap-1 text-accent-ink hover:underline"
             >
-                Back to top <ArrowUp size={12} />
+                Back to top
+                <ArrowUp size={12} class="transition-transform duration-300 group-hover:-translate-y-0.5" />
             </a>
         </div>
     </Container>

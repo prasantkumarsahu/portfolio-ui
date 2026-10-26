@@ -17,7 +17,7 @@ const pad = (n: number) => String(n).padStart(2, "0");
             headingId="skills-title"
         />
 
-        <div class="flex flex-col gap-6" data-tabs>
+        <div class="flex flex-col gap-6" data-tabs data-reveal style="--reveal-i: 1">
             <div
                 role="tablist"
                 aria-label="Skill categories"
@@ -32,7 +32,7 @@ const pad = (n: number) => String(n).padStart(2, "0");
                             aria-controls={`panel-${category.id}`}
                             aria-selected={i === 0 ? "true" : "false"}
                             tabindex={i === 0 ? 0 : -1}
-                            class="-mb-px flex h-12 shrink-0 cursor-pointer items-center gap-2 border-b-2 border-transparent px-2 text-sm whitespace-nowrap text-muted transition-colors hover:text-ink aria-selected:border-accent aria-selected:font-medium aria-selected:text-accent-ink"
+                            class="-mb-px flex h-12 shrink-0 cursor-pointer items-center gap-2 border-b-2 border-transparent px-2 text-sm whitespace-nowrap text-muted transition-[color,border-color] duration-300 hover:text-ink aria-selected:border-accent aria-selected:font-medium aria-selected:text-accent-ink"
                         >
                             {category.name}
                             <span class="text-[10px] font-normal">{pad(category.skills.length)}</span>
@@ -64,15 +64,22 @@ const pad = (n: number) => String(n).padStart(2, "0");
 </section>
 
 <script>
+    import { staggerIn } from "../../scripts/motion";
+
     document.querySelectorAll<HTMLElement>("[data-tabs]").forEach((root) => {
         const tabs = [...root.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
 
         const select = (tab: HTMLButtonElement) => {
+            if (tab.getAttribute("aria-selected") === "true") return;
+
             tabs.forEach((t) => {
                 const selected = t === tab;
+                const panel = root.querySelector<HTMLElement>(`#${t.getAttribute("aria-controls")}`)!;
                 t.setAttribute("aria-selected", String(selected));
                 t.tabIndex = selected ? 0 : -1;
-                root.querySelector<HTMLElement>(`#${t.getAttribute("aria-controls")}`)!.hidden = !selected;
+                panel.hidden = !selected;
+                // Chips of the newly shown panel cascade in
+                if (selected) staggerIn(panel.querySelectorAll("li"), 25);
             });
         };
 

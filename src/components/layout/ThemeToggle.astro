@@ -4,8 +4,8 @@ import Button from "../ui/Button.astro";
 ---
 
 <Button size="icon" data-theme-toggle aria-label="Toggle dark mode">
-    <Moon size={18} class="dark:hidden" />
-    <Sun size={18} class="hidden dark:block" />
+    <Moon size={18} class="transition-transform duration-500 group-hover/btn:-rotate-12 dark:hidden" />
+    <Sun size={18} class="hidden transition-transform duration-500 group-hover/btn:rotate-45 dark:block" />
 </Button>
 
 <script>
@@ -15,12 +15,24 @@ import Button from "../ui/Button.astro";
         const sync = () => button.setAttribute("aria-pressed", String(root.classList.contains("dark")));
         sync();
 
-        button.addEventListener("click", () => {
+        const toggle = () => {
             const dark = root.classList.toggle("dark");
             try {
                 localStorage.setItem("theme", dark ? "dark" : "light");
             } catch {}
             document.querySelectorAll("[data-theme-toggle]").forEach((b) => b.setAttribute("aria-pressed", String(dark)));
+        };
+
+        button.addEventListener("click", () => {
+            // Cross-fade the whole page between themes where supported
+            const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+            if (document.startViewTransition && !reduced) {
+                // The browser may skip the cross-fade (hidden tab, rapid clicks); the theme
+                // still switches, so the rejected `ready` promise is safe to ignore
+                document.startViewTransition(toggle).ready.catch(() => {});
+            } else {
+                toggle();
+            }
         });
     });
 </script>
