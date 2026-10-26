@@ -1,6 +1,6 @@
 ---
 import { ArrowUpRight, Mail } from "@lucide/astro";
-import { contactChannels } from "../../data/site";
+import { availability, contactChannels } from "../../data/site";
 import BrandIcon from "../ui/BrandIcon.astro";
 import Container from "../ui/Container.astro";
 import Eyebrow from "../ui/Eyebrow.astro";
@@ -20,6 +20,10 @@ import Eyebrow from "../ui/Eyebrow.astro";
             </h2>
             <p class="text-[17px] leading-[1.65] text-muted">
                 Have a system to build or a problem to untangle? Let’s start a conversation.
+            </p>
+            <p class="flex items-start gap-2.5 text-sm leading-[1.6] text-ink">
+                <span class="mt-1.5 size-1.5 shrink-0 rounded-full bg-emerald-500" aria-hidden="true"></span>
+                {availability.detail}
             </p>
         </div>
 

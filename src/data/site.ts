@@ -18,6 +18,25 @@ export const site = {
     colophon: "Thoughtful systems. Useful software.",
 };
 
+// Notice period at the current employer. The labels are worked out at build time, so a
+// deploy after the last working day switches to "available immediately" on its own.
+const lastWorkingDay = new Date("2027-01-07T00:00:00Z");
+const joinDate = new Date(lastWorkingDay.getTime() + 24 * 60 * 60 * 1000);
+const formatDate = (date: Date) =>
+    date.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
+const servingNotice = Date.now() < joinDate.getTime();
+
+export const availability = {
+    servingNotice,
+    lastWorkingDay: formatDate(lastWorkingDay),
+    /** Short status for the hero badge */
+    badge: servingNotice ? `Open to new roles · LWD ${formatDate(lastWorkingDay)}` : "Open to new roles",
+    /** Sentence for the contact section */
+    detail: servingNotice
+        ? `Serving notice at IBM: last working day ${formatDate(lastWorkingDay)}, available to join from ${formatDate(joinDate)}.`
+        : "Available to join immediately.",
+};
+
 export const navSections = [
     { name: "Projects", id: "projects" },
     { name: "Experience", id: "experience" },

@@ -1,7 +1,7 @@
 ---
 import { ArrowDown, Download } from "@lucide/astro";
 import dotRow from "../../assets/dot-row.svg";
-import { site } from "../../data/site";
+import { availability, site } from "../../data/site";
 import Button from "../ui/Button.astro";
 import Container from "../ui/Container.astro";
 ---
@@ -12,7 +12,7 @@ import Container from "../ui/Container.astro";
              Rows drift in alternating directions with a staggered brightness wave; the
              container's edge fade hides dots entering and leaving. -->
         <div
-            class="pointer-events-none absolute -top-3 right-6 flex w-40 flex-col gap-6 opacity-70 motion-safe:animate-fade-up [mask-image:linear-gradient(to_right,transparent,black_18%,black_82%,transparent)] sm:w-65.5 lg:top-16 lg:right-6"
+            class="pointer-events-none absolute -top-3 right-6 flex w-40 flex-col gap-6 opacity-70 motion-safe:animate-fade-up mask-[linear-gradient(to_right,transparent,black_18%,black_82%,transparent)] sm:w-65.5 lg:top-16 lg:right-6"
             style="animation-delay: 300ms"
             aria-hidden="true"
         >
@@ -31,15 +31,37 @@ import Container from "../ui/Container.astro";
             }
         </div>
 
-        <p
-            class="relative flex items-center gap-2 text-[11px] font-medium uppercase text-muted motion-safe:animate-fade-up"
+        <div
+            class="relative flex flex-wrap items-center gap-x-5 gap-y-3 motion-safe:animate-fade-up"
         >
-            <span class="relative flex size-1.5 shrink-0">
-                <span class="absolute inset-0 rounded-full bg-ink opacity-40 motion-safe:animate-ping"></span>
-                <span class="relative size-1.5 rounded-full bg-ink"></span>
-            </span>
-            {site.eyebrow}
-        </p>
+            <p
+                class="flex items-center gap-2 text-[11px] font-medium uppercase text-muted"
+            >
+                <span class="relative flex size-1.5 shrink-0">
+                    <span
+                        class="absolute inset-0 rounded-full bg-ink opacity-40 motion-safe:animate-ping"
+                    ></span>
+                    <span class="relative size-1.5 rounded-full bg-ink"></span>
+                </span>
+                {site.eyebrow}
+            </p>
+            <a
+                href="/#contact"
+                class="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-3 py-1.5 text-xs text-ink transition-colors duration-300 hover:border-emerald-500/50"
+            >
+                <span
+                    class="relative flex size-1.5 shrink-0"
+                    aria-hidden="true"
+                >
+                    <span
+                        class="absolute inset-0 rounded-full bg-emerald-500 opacity-60 motion-safe:animate-ping"
+                    ></span>
+                    <span class="relative size-1.5 rounded-full bg-emerald-500"
+                    ></span>
+                </span>
+                {availability.badge}
+            </a>
+        </div>
 
         <div class="relative flex max-w-210 flex-col gap-6">
             <h1
@@ -88,7 +110,9 @@ import Container from "../ui/Container.astro";
                     </p>
                     <p class="text-xs text-muted">{site.stats.label}</p>
                 </div>
-                <ul class="flex flex-col items-end gap-1 text-right text-xs text-muted">
+                <ul
+                    class="flex flex-col items-end gap-1 text-right text-xs text-muted"
+                >
                     {site.stats.focus.map((item) => <li>{item}</li>)}
                 </ul>
             </div>

@@ -1,6 +1,7 @@
 ---
 import { ArrowUpRight, Award, Minus, Plus } from "@lucide/astro";
 import { certifications, roles } from "../../data/experience";
+import { availability } from "../../data/site";
 import Container from "../ui/Container.astro";
 import SectionHeader from "../ui/SectionHeader.astro";
 import Tag from "../ui/Tag.astro";
@@ -41,6 +42,11 @@ import Tag from "../ui/Tag.astro";
                             {role.current && (
                                 <p class="text-[10px] font-medium uppercase text-accent-ink">
                                     Current role
+                                </p>
+                            )}
+                            {role.current && availability.servingNotice && (
+                                <p class="text-xs text-muted">
+                                    Serving notice · LWD {availability.lastWorkingDay}
                                 </p>
                             )}
                         </div>
