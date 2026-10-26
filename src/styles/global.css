@@ -15,6 +15,12 @@
     --accent: #2563eb;
     --accent-hover: #1d4ed8;
     --accent-ink: #2563eb;
+    /* GitHub contribution graph greens */
+    --gh-0: #ebedf0;
+    --gh-1: #9be9a8;
+    --gh-2: #40c463;
+    --gh-3: #30a14e;
+    --gh-4: #216e39;
     color-scheme: light;
 }
 
@@ -29,6 +35,11 @@
     --accent: #2563eb;
     --accent-hover: #3b82f6;
     --accent-ink: #60a5fa;
+    --gh-0: #161b22;
+    --gh-1: #0e4429;
+    --gh-2: #006d32;
+    --gh-3: #26a641;
+    --gh-4: #39d353;
     color-scheme: dark;
 }
 
@@ -47,6 +58,11 @@
     --color-accent: var(--accent);
     --color-accent-hover: var(--accent-hover);
     --color-accent-ink: var(--accent-ink);
+    --color-gh-0: var(--gh-0);
+    --color-gh-1: var(--gh-1);
+    --color-gh-2: var(--gh-2);
+    --color-gh-3: var(--gh-3);
+    --color-gh-4: var(--gh-4);
 
     /* Hero dot texture: a one-gap drift (26px = dot spacing, so it loops seamlessly)
        plus a slow brightness wave */
@@ -144,6 +160,21 @@
     }
 
     .js [data-reveal].is-visible .reveal-grow {
+        transform: none;
+    }
+
+    /* Contribution cells pop in week by week (--c = week column) */
+    .js [data-reveal] .reveal-cell {
+        opacity: 0;
+        transform: scale(0.5);
+        transition:
+            opacity 0.4s ease,
+            transform 0.4s var(--ease-out-soft);
+        transition-delay: calc(150ms + var(--c, 0) * 14ms);
+    }
+
+    .js [data-reveal].is-visible .reveal-cell {
+        opacity: 1;
         transform: none;
     }
 

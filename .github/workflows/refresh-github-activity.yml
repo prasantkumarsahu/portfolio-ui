@@ -1,0 +1,25 @@
+# Rebuilds the site daily so the GitHub contribution graph and activity feed stay current.
+# Needs a Vercel Deploy Hook URL stored as the repository secret VERCEL_DEPLOY_HOOK
+# (Vercel → Project → Settings → Git → Deploy Hooks). Without it, the job skips.
+name: Refresh GitHub activity
+
+on:
+  schedule:
+    - cron: "30 0 * * *" # daily, 06:00 IST
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  redeploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Vercel rebuild
+        env:
+          HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$HOOK" ]; then
+            echo "VERCEL_DEPLOY_HOOK is not set; skipping."
+            exit 0
+          fi
+          curl --fail --silent --show-error -X POST "$HOOK"

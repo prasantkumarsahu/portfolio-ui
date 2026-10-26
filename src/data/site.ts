@@ -4,6 +4,7 @@ export const site = {
     description:
         "Prasant Kumar Sahu is a Full Stack Java Developer building enterprise and AI-powered systems with Java, Spring Boot, React and Next.js. Projects, experience and contact.",
     locale: "en_US",
+    githubUsername: "prasantkumarsahu",
     githubUrl: "https://github.com/prasantkumarsahu",
     role: "Full Stack Java Developer",
     eyebrow: "Engineering with intent",
