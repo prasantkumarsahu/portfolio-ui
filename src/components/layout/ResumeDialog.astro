@@ -87,7 +87,7 @@ const fileName = `${site.name.replaceAll(" ", "_")}_Resume.pdf`;
             event.preventDefault();
 
             if (canShowPdf) {
-                if (!frame.src) frame.src = `${link.getAttribute("href")}#view=FitH&navpanes=0`;
+                if (!frame.src) frame.src = `${link.getAttribute("href")}#toolbar=0&navpanes=0&view=FitH`;
             } else {
                 frame.hidden = true;
                 fallback.hidden = false;
