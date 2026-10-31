@@ -2,7 +2,9 @@
 import {
     ArrowRight,
     ArrowUpRight,
+    Ban,
     CalendarDays,
+    Check,
     Clock3,
     Database,
     Files,
@@ -53,6 +55,17 @@ const kalingaSource = [
 ];
 const tokenColor: Record<string, string> = { kw: "text-accent-ink", ty: "text-ink font-medium", str: "text-muted", "": "text-ink" };
 const compileSteps = ["main.kl", "Rust", "rustc -O", "native"];
+
+// DocMind: question, cited answer and the retrieval steps behind it
+const ragSteps = ["Upload", "Embed", "Retrieve", "Answer"];
+
+// pg-insight-mcp tool calls; writes never reach the database
+const toolCalls = [
+    { tool: "run_query", sql: "SELECT status, count(*) FROM orders", result: "4 rows", ok: true },
+    { tool: "explain_query", sql: "… WHERE customer_id = 7", result: "Index Scan", ok: true },
+    { tool: "run_query", sql: "DELETE FROM orders", result: "rejected", ok: false },
+];
+const mcpSteps = ["MCP client", "SQL guard", "READ ONLY", "Postgres"];
 
 // Assembly layers move apart on card hover, outer layers furthest
 const layerSpread = [
@@ -186,6 +199,77 @@ const box = "rounded-lg border border-line bg-surface";
                     <span class="h-0.5 w-24 rounded-full bg-line" />
                     <span class="h-0.5 w-12 rounded-full bg-line" />
                 </div>
+            </>
+        )
+    }
+
+    {
+        kind === "rag" && (
+            <>
+                <div class="flex items-center justify-between">
+                    <span class={label}>Retrieval / Chat</span>
+                    <span class="flex items-center gap-1 text-[10px] text-muted">
+                        <span class="size-1 rounded-full bg-ink motion-safe:animate-pulse" />
+                        Streaming
+                    </span>
+                </div>
+                <div class="flex min-w-0 flex-1 flex-col justify-center gap-2">
+                    <p class="max-w-[80%] self-end rounded-lg bg-ink px-3 py-1.5 text-[11px] text-canvas transition-transform duration-500 ease-out group-hover:-translate-y-0.5">
+                        How much notice do I need to give?
+                    </p>
+                    <div class:list={[box, "flex max-w-[90%] flex-col gap-1.5 px-3 py-2 transition-[translate,border-color] duration-500 ease-out group-hover:-translate-y-0.5 group-hover:border-accent/40"]} style="transition-delay: 80ms">
+                        <p class="text-[11px] text-ink">
+                            60 days, in writing
+                            <span class="ml-1 rounded-sm bg-accent/10 px-1 font-mono text-[9px] text-accent-ink">1</span>
+                        </p>
+                        <p class="flex min-w-0 items-center gap-1.5 text-[10px] text-muted">
+                            <Files size={10} class="shrink-0" />
+                            <span class="truncate">acme-handbook.md · p. 3</span>
+                        </p>
+                    </div>
+                </div>
+                <p class="flex flex-wrap items-center gap-2 text-[10px] uppercase text-muted">
+                    {ragSteps.map((step, i) => (
+                        <>
+                            {step}
+                            {i < ragSteps.length - 1 && <ArrowRight size={10} />}
+                        </>
+                    ))}
+                </p>
+            </>
+        )
+    }
+
+    {
+        kind === "mcp" && (
+            <>
+                <div class="flex items-center justify-between">
+                    <span class={label}>MCP / Tools</span>
+                    <span class="font-mono text-[10px] text-muted">read-only</span>
+                </div>
+                <ul class:list={[box, "flex min-w-0 flex-1 flex-col justify-center gap-2 px-3 py-2 font-mono text-[10px] sm:text-[11px]"]}>
+                    {toolCalls.map((call, i) => (
+                        <li
+                            class="flex min-w-0 items-center gap-2 transition-transform duration-500 ease-out group-hover:translate-x-1"
+                            style={`transition-delay: ${i * 80}ms`}
+                        >
+                            <span class="shrink-0 text-accent-ink">{call.tool}</span>
+                            <span class="min-w-0 flex-1 truncate text-muted">{call.sql}</span>
+                            <span class:list={["flex shrink-0 items-center gap-1", call.ok ? "text-ink" : "text-muted"]}>
+                                {call.ok ? <Check size={11} /> : <Ban size={11} />}
+                                {call.result}
+                            </span>
+                        </li>
+                    ))}
+                </ul>
+                <p class="flex flex-wrap items-center gap-2 font-mono text-[10px] text-muted">
+                    {mcpSteps.map((step, i) => (
+                        <>
+                            <span class:list={[i === mcpSteps.length - 1 && "text-ink"]}>{step}</span>
+                            {i < mcpSteps.length - 1 && <ArrowRight size={10} />}
+                        </>
+                    ))}
+                </p>
             </>
         )
     }

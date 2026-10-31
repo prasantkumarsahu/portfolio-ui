@@ -1,4 +1,4 @@
-export type ProjectPreview = "document" | "assembly" | "people" | "reporting" | "compiler";
+export type ProjectPreview = "document" | "assembly" | "people" | "reporting" | "compiler" | "rag" | "mcp";
 
 export type Project = {
     slug: string;
@@ -21,7 +21,7 @@ export type Project = {
     featured?: boolean;
 };
 
-export const projectFilters = ["Java", "React.js", "AI", "Rust"] as const;
+export const projectFilters = ["Java", "React.js", "AI", "Python", "Rust"] as const;
 
 export const projects: Project[] = [
     {
@@ -71,6 +71,34 @@ export const projects: Project[] = [
         highlight: "Reporting APIs and third-party integrations",
         context: "Envotions · Daappa",
         preview: "reporting",
+    },
+    {
+        slug: "docmind",
+        category: "Personal project · Generative AI",
+        title: "DocMind",
+        summary:
+            "Chat with your documents: a RAG app that streams answers token by token and cites the exact passages they came from, running fully local.",
+        tags: ["Java 21", "Spring Boot 4", "Spring AI", "pgvector", "Ollama", "React 19"],
+        filters: ["Java", "React.js", "AI"],
+        highlight: "Grounded answers with numbered citations",
+        context: "RAG · semantic search over HNSW",
+        href: "https://github.com/prasantkumarsahu/docmind",
+        linkLabel: "View on GitHub",
+        preview: "rag",
+    },
+    {
+        slug: "pg-insight-mcp",
+        category: "Personal project · AI tooling",
+        title: "pg-insight-mcp",
+        summary:
+            "A read-only PostgreSQL server for the Model Context Protocol, so AI clients can explore schemas, run safe queries and read execution plans.",
+        tags: ["Python", "MCP", "PostgreSQL", "LLM tooling"],
+        filters: ["AI", "Python"],
+        highlight: "Guarded SQL in READ ONLY transactions",
+        context: "Claude Desktop, VS Code, Cursor",
+        href: "https://github.com/prasantkumarsahu/pg-insight-mcp",
+        linkLabel: "View on GitHub",
+        preview: "mcp",
     },
     {
         slug: "kalinga-lang",
