@@ -29,8 +29,8 @@ export const projects: Project[] = [
         category: "Document intelligence · Automotive",
         title: "Document Processing Verification (DPV)",
         summary:
-            "Automotive document processing and verification, with Generative AI for intelligent retrieval, analysis and automation.",
-        tags: ["Java 21", "Spring Boot", "Next.js", "LangChain", "Ollama", "MCP"],
+            "Automotive document processing and verification, with RAG pipelines and Generative AI for intelligent retrieval, analysis and automation.",
+        tags: ["Java 21 / 25", "Spring Boot", "Next.js", "Python", "LangChain", "Ollama", "RAG", "MCP"],
         filters: ["Java", "React.js", "AI"],
         highlight: "GenAI retrieval over engineering documents",
         context: "IBM · Mercedes-Benz (MBRDI)",
@@ -92,7 +92,7 @@ export const projects: Project[] = [
         title: "pg-insight-mcp",
         summary:
             "A read-only PostgreSQL server for the Model Context Protocol, so AI clients can explore schemas, run safe queries and read execution plans.",
-        tags: ["Python", "MCP", "PostgreSQL", "LLM tooling"],
+        tags: ["Python", "MCP SDK", "psycopg 3", "PostgreSQL", "pytest", "Docker"],
         filters: ["AI", "Python"],
         highlight: "Guarded SQL in READ ONLY transactions",
         context: "Claude Desktop, VS Code, Cursor",

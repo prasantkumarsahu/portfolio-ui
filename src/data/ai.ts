@@ -25,9 +25,9 @@ export const aiExplorations: AiExploration[] = [
     },
     {
         label: "Semantic retrieval",
-        title: "Vector databases",
+        title: "RAG and vector databases",
         description:
-            "Turn automotive documents into embeddings for relevant search and grounded answers.",
+            "Index engineering documents as embeddings so engineers get context-aware, grounded answers.",
         icon: "database",
         flow: ["Embed", "Search", "Context"],
     },

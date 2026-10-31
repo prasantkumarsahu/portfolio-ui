@@ -1,21 +1,21 @@
 export const site = {
     name: "Prasant Kumar Sahu",
-    title: "Prasant Kumar Sahu · Full Stack Java Developer",
+    title: "Prasant Kumar Sahu · Full Stack Java & GenAI Engineer",
     description:
-        "Prasant Kumar Sahu is a Full Stack Java Developer building enterprise and AI-powered systems with Java, Spring Boot, React and Next.js. Projects, experience and contact.",
+        "Prasant Kumar Sahu is a software engineer building enterprise applications and production Generative AI with Java, Spring Boot, React, Next.js, LangChain, RAG and MCP. Projects, experience and contact.",
     locale: "en_US",
     githubUsername: "prasantkumarsahu",
     githubUrl: "https://github.com/prasantkumarsahu",
-    role: "Full Stack Java Developer",
+    role: "Full Stack Java & GenAI Engineer",
     location: { city: "Bangalore", country: "India", countryCode: "IN" },
     eyebrow: "Engineering with intent",
     tagline:
-        "Building enterprise and AI-powered systems with Java, Spring Boot, React and Next.js",
+        "Building enterprise applications with Java, Spring Boot, React and Next.js, and bringing Generative AI into production",
     resumeUrl: "/resume.pdf",
     stats: {
-        value: "3+ years",
+        value: "3.5+ years",
         label: "of engineering experience",
-        focus: ["Enterprise systems", "AI-powered applications", "Cloud-native on AWS"],
+        focus: ["Enterprise systems", "Generative AI in production", "Cloud-native on AWS"],
     },
     colophon: "Thoughtful systems. Useful software.",
 };
