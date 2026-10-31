@@ -257,6 +257,42 @@
         }
     }
 
+    /* Resume dialog scales in and fades out, backdrop included */
+    @media (prefers-reduced-motion: no-preference) {
+        .resume-dialog,
+        .resume-dialog::backdrop {
+            transition:
+                opacity 0.3s var(--ease-out-soft),
+                scale 0.3s var(--ease-out-soft),
+                overlay 0.3s allow-discrete,
+                display 0.3s allow-discrete;
+            opacity: 0;
+        }
+
+        .resume-dialog {
+            scale: 0.97;
+        }
+
+        .resume-dialog[open],
+        .resume-dialog[open]::backdrop {
+            opacity: 1;
+            scale: 1;
+        }
+
+        @starting-style {
+            .resume-dialog[open],
+            .resume-dialog[open]::backdrop {
+                opacity: 0;
+                scale: 0.97;
+            }
+        }
+    }
+
+    /* Page behind an open dialog doesn't scroll */
+    html:has(dialog[open]) {
+        overflow: hidden;
+    }
+
     /* Cross-fade the theme switch (ThemeToggle uses the View Transitions API) */
     ::view-transition-old(root),
     ::view-transition-new(root) {

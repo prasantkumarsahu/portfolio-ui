@@ -1,5 +1,5 @@
 ---
-import { ArrowDown, Download, MapPin } from "@lucide/astro";
+import { ArrowDown, Download, FileText, MapPin } from "@lucide/astro";
 import { Image } from "astro:assets";
 import dotRow from "../../assets/dot-row.svg";
 import profile from "../../assets/profile.jpg";
@@ -94,11 +94,24 @@ import Container from "../ui/Container.astro";
                                 class="transition-transform duration-300 group-hover/btn:translate-y-0.5"
                             />
                         </Button>
-                        <Button href={site.resumeUrl} size="lg" download>
-                            Download resume
+                        <Button href={site.resumeUrl} size="lg" data-resume-open>
+                            View resume
+                            <FileText
+                                size={16}
+                                class="hidden transition-transform duration-300 group-hover/btn:-translate-y-0.5 sm:block"
+                            />
+                        </Button>
+                        <Button
+                            href={site.resumeUrl}
+                            size="icon"
+                            class="size-12 max-sm:hidden"
+                            download
+                            aria-label="Download resume"
+                            title="Download resume"
+                        >
                             <Download
                                 size={16}
-                                class="hidden transition-transform duration-300 group-hover/btn:translate-y-0.5 sm:block"
+                                class="transition-transform duration-300 group-hover/btn:translate-y-0.5"
                             />
                         </Button>
                     </div>

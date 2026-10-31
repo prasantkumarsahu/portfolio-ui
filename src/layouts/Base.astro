@@ -5,6 +5,7 @@ import Analytics from "@vercel/analytics/astro";
 
 import Header from "../components/layout/Header.astro";
 import Footer from "../components/layout/Footer.astro";
+import ResumeDialog from "../components/layout/ResumeDialog.astro";
 import Seo from "../components/layout/Seo.astro";
 import { site } from "../data/site";
 
@@ -63,6 +64,7 @@ const { title = site.title, description = site.description, noindex = false } = 
             <slot />
         </main>
         <Footer />
+        <ResumeDialog />
         <script>
             import "../scripts/motion";
         </script>
