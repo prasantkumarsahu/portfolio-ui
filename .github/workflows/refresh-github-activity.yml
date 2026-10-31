@@ -1,11 +1,11 @@
-# Rebuilds the site daily so the GitHub contribution graph and activity feed stay current.
+# Rebuilds the site every 6 hours so the GitHub contribution graph and activity feed stay current.
 # Needs a Vercel Deploy Hook URL stored as the repository secret VERCEL_DEPLOY_HOOK
 # (Vercel → Project → Settings → Git → Deploy Hooks). Without it, the job skips.
 name: Refresh GitHub activity
 
 on:
   schedule:
-    - cron: "30 0 * * *" # daily, 06:00 IST
+    - cron: "30 */6 * * *" # every 6 hours from 06:00 IST (GitHub may start runs late)
   workflow_dispatch:
 
 permissions: {}

@@ -21,6 +21,7 @@ export type GitHubData = {
     total: number;
     activeDays: number;
     longestStreak: number;
+    currentStreak: number;
     publicRepos: number | null;
     activity: ActivityItem[];
 };
@@ -100,6 +101,17 @@ function longestStreak(days: ContributionDay[]) {
     return best;
 }
 
+/** Consecutive active days up to today; a quiet today doesn't break it until the day is over. */
+function currentStreak(days: ContributionDay[]) {
+    let i = days.length - 1;
+    if (days[i]?.count === 0) i--;
+    let run = 0;
+    for (; i >= 0 && days[i].count > 0; i--) run++;
+    return run;
+}
+
+type GitHubRepo = { name: string; full_name: string; html_url: string; created_at: string; pushed_at: string; default_branch: string; fork: boolean };
+
 type GitHubEvent = {
     type: string;
     created_at: string;
@@ -168,10 +180,11 @@ export function getGitHubData(username: string): Promise<GitHubData> {
 }
 
 async function loadGitHubData(username: string): Promise<GitHubData> {
-    const [html, user, events] = await Promise.all([
+    const [html, user, events, repos] = await Promise.all([
         getText(`https://github.com/users/${username}/contributions`),
         getJson<{ public_repos: number }>(`https://api.github.com/users/${username}`),
         getJson<GitHubEvent[]>(`https://api.github.com/users/${username}/events/public?per_page=100`),
+        getJson<GitHubRepo[]>(`https://api.github.com/users/${username}/repos?sort=pushed&per_page=10`),
     ]);
 
     const days = html ? parseCalendar(html) : [];
@@ -213,6 +226,33 @@ async function loadGitHubData(username: string): Promise<GitHubData> {
         if (activity.length === 6) break;
     }
 
+    // The events feed can lag GitHub by hours or days; fill the gap from the repos' own
+    // creation and push times, with commit counts from the commits API
+    const newestEvent = (events ?? []).reduce((max, e) => (e.created_at > max ? e.created_at : max), "");
+    const recent = (repos ?? []).filter((repo) => !repo.fork && repo.pushed_at > newestEvent).slice(0, 6);
+    const filled = await Promise.all(
+        recent.map(async (repo) => {
+            const items: ActivityItem[] = [];
+            const base = { repo: repo.name, repoUrl: repo.html_url };
+            const since = newestEvent && newestEvent > repo.created_at ? newestEvent : repo.created_at;
+            const commits = await getJson<unknown[]>(
+                `https://api.github.com/repos/${repo.full_name}/commits?author=${username}&since=${since}&per_page=100`,
+            );
+            const n = commits?.length ?? 0;
+            items.push({
+                ...base,
+                kind: "push",
+                text: n ? `Pushed ${n}${n === 100 ? "+" : ""} commit${n === 1 ? "" : "s"} to ${repo.default_branch}` : `Pushed to ${repo.default_branch}`,
+                date: repo.pushed_at,
+            });
+            if (repo.created_at > newestEvent) items.push({ ...base, kind: "create", text: "Created repository", date: repo.created_at });
+            return items;
+        }),
+    );
+    activity.unshift(...filled.flat());
+    activity.sort((a, b) => b.date.localeCompare(a.date));
+    activity.splice(6);
+
     await Promise.all(
         [...prApi].map(async ([item, apiUrl]) => {
             const pr = await getJson<{ title: string; html_url: string }>(apiUrl);
@@ -229,6 +269,7 @@ async function loadGitHubData(username: string): Promise<GitHubData> {
         total: days.reduce((sum, day) => sum + day.count, 0),
         activeDays: days.filter((day) => day.count > 0).length,
         longestStreak: longestStreak(days),
+        currentStreak: currentStreak(days),
         publicRepos: user?.public_repos ?? null,
         activity,
     };

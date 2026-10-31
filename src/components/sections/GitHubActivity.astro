@@ -43,9 +43,11 @@ const monthLabels = data.weeks.map((week, i) => {
 const tooltip = (count: number, date: string) =>
     `${count === 0 ? "No" : count} contribution${count === 1 ? "" : "s"} on ${fmt(date, { day: "numeric", month: "short", year: "numeric" })}`;
 
+const days = (n: number) => `${n} day${n === 1 ? "" : "s"}`;
 const stats = [
     { label: "Active days", value: data.activeDays },
-    { label: "Longest streak", value: `${data.longestStreak} day${data.longestStreak === 1 ? "" : "s"}` },
+    { label: "Current streak", value: days(data.currentStreak) },
+    { label: "Longest streak", value: days(data.longestStreak) },
     ...(data.publicRepos !== null ? [{ label: "Public repos", value: data.publicRepos }] : []),
 ];
 ---
@@ -145,7 +147,7 @@ const stats = [
                     )
                 }
 
-                <dl class="mt-auto grid grid-cols-3 gap-4 border-t border-line pt-4">
+                <dl class="mt-auto grid grid-cols-2 gap-4 border-t border-line pt-4 sm:grid-cols-4">
                     {
                         stats.map((stat) => (
                             <div class="flex flex-col gap-1">
