@@ -22,7 +22,7 @@ export const site = {
 
 // Notice period at the current employer. The labels are worked out at build time, so a
 // deploy after the last working day switches to "available immediately" on its own.
-const lastWorkingDay = new Date("2027-01-07T00:00:00Z");
+const lastWorkingDay = new Date("2026-12-24T00:00:00Z");
 const joinDate = new Date(lastWorkingDay.getTime() + 24 * 60 * 60 * 1000);
 const formatDate = (date: Date) =>
     date.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
